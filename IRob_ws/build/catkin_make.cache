@@ -1,2 +1,2 @@
 turtlebot3_datasets
--DCATKIN_DEVEL_PREFIX=/home/pablo/IRob_ws/devel -DCMAKE_INSTALL_PREFIX=/home/pablo/IRob_ws/install -G Unix Makefiles
+-DCATKIN_DEVEL_PREFIX=/home/nuno/Desktop/IRob/IRob_ws/devel -DCMAKE_INSTALL_PREFIX=/home/nuno/Desktop/IRob/IRob_ws/install -G Unix Makefiles
