@@ -1,0 +1,43 @@
+frequency: 50.0
+sensor_timeout: 1.0
+two_d_mode: true  # if your robot only moves in a plane
+# Frames
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+
+
+# ODOM (velocity/pose) input - high frequency
+odom0: /odom
+odom0_config: [true, true, false,   # x, y, z
+               false, false, true,  # roll,pitch,yaw
+               true, false, false,   # vx,vy,vz
+               false, false, false, # vroll,vpitch,vyaw
+               false, false, false] # accelerations
+odom0_differential: false
+odom0_queue_size: 10
+odom0_nodelay: false
+odom0_relative: false
+
+# IMU input - high frequency
+imu0: /imu/data
+imu0_config: [false, false, false,  # x,y,z
+              true, true, true,     # roll,pitch,yaw  (fuse orientation)
+              false, false, false,  # vx,vy,vz
+              false, false, true,  # vroll,vpitch,vyaw
+              false, false, false]
+imu0_differential: false
+imu0_queue_size: 50
+imu0_remove_gravitational_acceleration: true
+
+# External pose input (ground truth) - downsampled to 1 Hz by a small node you'll run
+pose0: /ground_truth_downsampled
+pose0_config: [true, true, false,  # x,y,z
+               false, false, true, # roll,pitch,yaw
+               false, false, false,
+               false, false, false,
+               false, false, false]
+pose0_queue_size: 5
+pose0_nodelay: true
+pose0_relative: false

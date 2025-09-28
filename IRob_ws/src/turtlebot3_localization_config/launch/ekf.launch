@@ -1,0 +1,11 @@
+<launch>
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Start ground truth downsampler -->
+  <node pkg="turtlebot3_localization_config" type="ground_truth_downsampled.py" name="ground_truth_downsampled" output="screen"/>
+
+  <!-- Start the EKF localization node -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_filter_node" clear_params="true" output="screen">
+    <rosparam command="load" file="$(find turtlebot3_localization_config)/config/ekf.yaml"/>
+  </node>
+</launch>
