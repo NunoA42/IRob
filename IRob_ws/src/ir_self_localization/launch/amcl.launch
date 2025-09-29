@@ -1,17 +1,15 @@
 <launch>
-  <!-- Map server -->
-  <node pkg="map_server" type="map_server" name="map_server" args="$(find ir_self_localization)/maps/my_map.yaml"/>
 
-  <!-- AMCL node -->
-  <node pkg="amcl" type="amcl" name="amcl" output="screen">
-    <param name="use_map_topic" value="false"/>
-    <param name="min_particles" value="500"/>
-    <param name="max_particles" value="2000"/>
-    <param name="odom_frame_id" value="odom"/>
-    <param name="base_frame_id" value="base_link"/>
-    <param name="global_frame_id" value="map"/>
+  <arg name="map_file" default="/home/nuno/Desktop/IRob/ros_ws/src/ir_self_localization/maps/my_map1.yaml"/>
+  <param name="use_sim_time" value="false"/>
+
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"/>
+
+  <node pkg="amcl" type="amcl" name="amcl">
+  <remap from="scan" to="/scan"/>
+  <param name="odom_frame_id" value="odom"/>
+  <param name="base_frame_id" value="base_link"/>
+  <remap from="/odom" to="/odom"/>
   </node>
 
-  <!-- RViz -->
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find ir_self_localization)/rviz/amcl.rviz"/>
 </launch>
