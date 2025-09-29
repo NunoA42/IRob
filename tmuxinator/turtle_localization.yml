@@ -1,0 +1,30 @@
+name: turtle_localization
+root: ~/IRob_ws
+
+windows:
+  - roscore:
+      panes:
+        - roscore
+        - sleep 2 && rosparam set use_sim_time true
+
+  - bag:
+      panes:
+        # wait 3s to make sure roscore is up
+        - sleep 3 && rosbag play --clock $(rospack find turtlebot3_datasets)/data/fixed_slam_easy.bag
+
+  - map:
+      panes:
+        # wait 7s, start map server + static tf
+        - sleep 7 && rosrun map_server map_server $(rospack find turtlebot3_datasets)/data/map.yaml
+        - sleep 8 && rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 map odom
+
+  - ekf:
+      panes:
+        # wait 10s, start EKF + GT downsampler
+        - sleep 10 && roslaunch turtlebot3_localization_config ekf.launch
+        - sleep 10 && rosrun turtlebot3_localization_config ground_truth_path.py
+
+  - rviz:
+      panes:
+         #wait 12s, start RViz with your config
+        - sleep 12 && rviz -d $(rospack find turtlebot3_localization_config)/rviz/ekf_gt.rviz
