@@ -1,0 +1,24 @@
+<launch>
+  <!-- Run SLAM Gmapping -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <!-- Topics: adjust these to match your robot -->
+    <remap from="scan" to="/scan" />               <!-- Laser scanner topic -->
+    <remap from="odom" to="/odometry/filtered" />  <!-- Odometry topic (EKF filtered) -->
+    <!-- Recommended gmapping parameters -->
+    <param name="map_update_interval" value="2.0" />
+    <param name="maxUrange" value="30.0" />
+    <param name="minScore" value="200" />
+    <param name="particles" value="80" />
+    <param name="linearUpdate" value="0.2" />
+    <param name="angularUpdate" value="0.2" />
+    <param name="resampleThreshold" value="0.5" />
+    <param name="srr" value="0.1" />
+    <param name="srt" value="0.2" />
+    <param name="str" value="0.1" />
+    <param name="stt" value="0.2" />
+    <param name="xmin" value="-10.0" />
+    <param name="ymin" value="-10.0" />
+    <param name="xmax" value="10.0" />
+    <param name="ymax" value="10.0" />
+  </node>
+</launch>
