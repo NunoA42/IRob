@@ -1,11 +1,21 @@
 <launch>
   <param name="use_sim_time" value="true"/>
 
-  <!-- Start ground truth downsampler -->
+  <!-- Link GT tree into odom/map tree -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_mocap" args="-1.25433 1.04729 0.03315 -0.001 0.003 -0.737 0.676 odom mocap"/>
+
+  <!-- Make GT pose at 1 Hz from TF (mocap -> mocap_laser_link) -->
   <node pkg="turtlebot3_localization_config" type="ground_truth_downsampled.py" name="ground_truth_downsampled" output="screen"/>
+
+  <!-- Accumulate GT poses into a nav_msgs/Path for RViz -->
+  <node pkg="turtlebot3_localization_config" type="ground_truth_path.py" name="ground_truth_path" output="screen"/>
+
+  <!-- Creates ekf output path  -->
+  <node pkg="turtlebot3_localization_config" type="ekf_path.py" name="ekf_path" output="screen"/>
 
   <!-- Start the EKF localization node -->
   <node pkg="robot_localization" type="ekf_localization_node" name="ekf_filter_node" clear_params="true" output="screen">
     <rosparam command="load" file="$(find turtlebot3_localization_config)/config/ekf.yaml"/>
   </node>
+
 </launch>
