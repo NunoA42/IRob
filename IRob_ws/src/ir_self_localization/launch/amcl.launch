@@ -6,10 +6,30 @@
   <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"/>
 
   <node pkg="amcl" type="amcl" name="amcl">
-  <remap from="scan" to="/scan"/>
-  <param name="odom_frame_id" value="odom"/>
-  <param name="base_frame_id" value="base_link"/>
-  <remap from="/odom" to="/odom"/>
+    <remap from="scan" to="/scan"/>
+    <remap from="/odom" to="/odom"/>
+
+    <!-- Frames -->
+    <param name="odom_frame_id" value="odom"/>
+    <param name="base_frame_id" value="base_link"/>
+
+    <!-- Menor confiança na odometria (mais peso no scan) -->
+    <param name="odom_alpha1" value="0.5"/>
+    <param name="odom_alpha2" value="0.5"/>
+    <param name="odom_alpha3" value="0.5"/>
+    <param name="odom_alpha4" value="0.5"/>
+    <param name="odom_alpha5" value="0.5"/>
+
+    <!-- Incerteza inicial maior -->
+    <param name="initial_cov_xx" value="1.0"/>
+    <param name="initial_cov_yy" value="1.0"/>
+    <param name="initial_cov_aa" value="1.0"/>
+
+    <!-- Mais partículas espalhadas -->
+    <param name="min_particles" value="500"/>
+    <param name="max_particles" value="5000"/>
+
+
   </node>
 
 </launch>
