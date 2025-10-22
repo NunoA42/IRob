@@ -1,0 +1,16 @@
+<launch>
+  <!-- Load modified AMCL parameters -->
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <param name="use_map_topic" value="true"/>
+    <rosparam file="$(find waypoint_navigation)/param/amcl.yaml" command="load"/>
+  </node>
+
+  <!-- Load modified move_base parameters -->
+  <node pkg="move_base" type="move_base" name="move_base" output="screen">
+    <rosparam file="$(find waypoint_navigation)/param/move_base_params.yaml" command="load"/>
+  </node>
+
+  <!-- Run the waypoint navigation node -->
+  <node pkg="waypoint_navigation" type="waypoint_navigation.py"
+        name="waypoint_navigation" output="screen"/>
+</launch>

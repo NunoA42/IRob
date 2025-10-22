@@ -1,0 +1,17 @@
+controller_frequency: 10.0
+planner_frequency: 1.0
+planner_patience: 5.0
+controller_patience: 3.0
+
+# Allow goal tolerance (don't be too strict)
+yaw_goal_tolerance: 1
+xy_goal_tolerance: 1
+latch_xy_goal_tolerance: true
+
+# Obstacle avoidance loosened
+clearing_rotation_allowed: false
+recovery_behavior_enabled: false
+
+# Optional: increase inflation radius tolerance slightly
+costmap_common_params:
+  inflation_radius: 0.05    # Smaller inflation → closer to obstacles

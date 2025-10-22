@@ -1,0 +1,10 @@
+<launch>
+    <arg name="map_file" default="$(find q_learning_robot)/maps/my_map1.yaml"/>
+
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+    <node pkg="tf" type="static_transform_publisher" name="map_to_odom_link" 
+          args="0 0 0 0 0 0 /map /odom 100" />
+
+    <node name="q_learning_node" pkg="q_learning_robot" type="q_learning_node.py" output="screen" />
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+    <!-- Map server -->
+    <node name="map_server" pkg="map_server" type="map_server" output="screen">
+        <param name="frame_id" value="map"/>
+        <param name="yaml_filename" value="/root/IRob/IRob_ws/src/maps/my_map1.yaml"/>
+    </node>
+
+    <!-- Q-Learning Node Real -->
+    <node name="q_learning_real" pkg="q_learning_robot" type="q_learning_real.py" output="screen">
+        <param name="grid_size" value="52"/>
+        <param name="goal_cell" value="[33,40]"/>
+    </node>
+</launch>

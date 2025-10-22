@@ -1,0 +1,8 @@
+prefix=/root/catkin_ws/devel
+
+Name: rrt_planner
+Description: Description of rrt_planner
+Version: 1.0.0
+Cflags: -I/root/catkin_ws/src/rrt_planner/include
+Libs: -L${prefix}/lib -lrrt_planner
+Requires: costmap_2d geometry_msgs nav_msgs tf2_geometry_msgs tf2 nav_core pluginlib roscpp
