@@ -142,12 +142,16 @@ class QLearningROS:
         y2_min, y2_max = -1.3, -0.14
 
         # Retângulo 3
-        x3_min, x3_max = -0.61, 4.19
-        y3_min, y3_max = 0.54, 1.66
+        x3_min, x3_max = -0.65, 3.84
+        y3_min, y3_max = 0.855, 1.66
 
-        # Retângulo 4 (novo)
-        x4_min, x4_max = -1.3170, 4.4620
-        y4_min, y4_max = 0.5298, 2.5689
+        # Retângulo 4
+        x4_min, x4_max = 4.876, 6.364
+        y4_min, y4_max = -3.263, 3.281
+
+        # Retângulo 5 (novos pontos)
+        x5_min, x5_max = -0.766, 3.8
+        y5_min, y5_max = 0.633, 1.438
 
         # Dimensões reais de cada célula da grelha
         cell_width_m = (self.map_info.width / self.GRID_SIZE) * self.map_info.resolution
@@ -158,15 +162,17 @@ class QLearningROS:
             for c in range(self.GRID_SIZE):
                 x_celula = c * cell_width_m + self.map_info.origin.position.x
                 y_celula = r * cell_height_m + self.map_info.origin.position.y
-
+                
+                # Verifica se está dentro de algum dos retângulos
                 if (
                     (x1_min <= x_celula <= x1_max and y1_min <= y_celula <= y1_max) or
                     (x2_min <= x_celula <= x2_max and y2_min <= y_celula <= y2_max) or
                     (x3_min <= x_celula <= x3_max and y3_min <= y_celula <= y3_max) or
-                    (x4_min <= x_celula <= x4_max and y4_min <= y_celula <= y4_max)
+                    (x4_min <= x_celula <= x4_max and y4_min <= y_celula <= y4_max) or
+                    (x5_min <= x_celula <= x5_max and y5_min <= y_celula <= y5_max)
                 ):
                     self.grid[r, c] = 1
-
+                    
         # --- Forçar células específicas a serem livres ---
         coordenadas_livres = [
             (1.621452808380127, -2.0439205169677734),

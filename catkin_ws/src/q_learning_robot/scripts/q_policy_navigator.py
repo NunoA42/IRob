@@ -4,10 +4,10 @@
 Q-Policy Navigator for TurtleBot3 (ROS1)
 --------------------------------------
 
-• Lê uma Q-table exportada (pickle) do teu agente discreto.
-• Converte célula (r,c) -> alvo em coordenadas do mundo (map frame).
-• Envia objetivos para o move_base (Navigation Stack) célula a célula.
-• Pode receber o "próximo quadrado" externamente via tópico /q_target_cell
+- Lê uma Q-table exportada (pickle) do teu agente discreto.
+- Converte célula (r,c) -> alvo em coordenadas do mundo (map frame).
+- Envia objetivos para o move_base (Navigation Stack) célula a célula.
+- Pode receber o "próximo quadrado" externamente via tópico /q_target_cell
   (std_msgs/Int32MultiArray com [row, col]). Se não receber, decide pelo
   melhor passo a partir da Q-table (greedy) face ao estado atual.
 
@@ -49,7 +49,7 @@ import tf
 class QPolicyNavigator:
     def __init__(self):
         # --- Parâmetros ROS ---
-        self.q_table_path = rospy.get_param('~q_table_path', '/root/catkin_ws/src/q_learning_robot/q_table.pkl')
+        self.q_table_path = rospy.get_param('~q_table_path', '/home/acsdc/Desktop/IRob-main/catkin_ws/src/q_learning_robot/q_table.pkl')
         self.grid_size = int(rospy.get_param('~grid_size', 52))
         self.num_orientations = int(rospy.get_param('~num_orientations', 4))  # deve coincidir com o treino
         self.goal_timeout = float(rospy.get_param('~goal_timeout', 60.0))     # s por célula
@@ -231,29 +231,6 @@ class QPolicyNavigator:
         dist = math.hypot(gx - x, gy - y)
         dyaw = self.norm_angle(gyaw - yaw)
         return (dist <= self.pos_tolerance) and (abs(dyaw) <= self.yaw_tolerance)
-
-def send_move_base_goal(self, x, y, yaw):
-        goal = MoveBaseGoal()
-        goal.target_pose.header.frame_id = self.frame_map
-        goal.target_pose.header.stamp = rospy.Time.now()
-        goal.target_pose.pose.position.x = x
-        goal.target_pose.pose.position.y = y
-        goal.target_pose.pose.position.z = 0.0
-        q = tf.transformations.quaternion_from_euler(0, 0, yaw)
-        goal.target_pose.pose.orientation.x = q[0]
-        goal.target_pose.pose.orientation.y = q[1]
-        goal.target_pose.pose.orientation.z = q[2]
-        goal.target_pose.pose.orientation.w = q[3]
-
-        self.mb_client.send_goal(goal)
-        finished = self.mb_client.wait_for_result(rospy.Duration(self.goal_timeout))
-        if not finished:
-            rospy.logwarn("[QPolicyNavigator] Timeout do objetivo (%.1fs). A cancelar...", self.goal_timeout)
-            self.mb_client.cancel_goal()
-            return False
-        state = self.mb_client.get_state()
-        # 3 == SUCCEEDED em actionlib_msgs/GoalStatus
-        return state == 3
 
     # ---------------------- Utilitários de grelha ----------------------
     def cell_to_world_center(self, row, col):
