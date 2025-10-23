@@ -96,7 +96,7 @@ namespace rrt_planner {
          * Implement your code here
          **************************/
         // 3% chance to sample goal directly
-        const double goal_bias_prob = 0.25;
+        const double goal_bias_prob = 0.030;
         double prob = ((double)rand() / RAND_MAX);
 
         // Sample in a region around the goal
@@ -126,14 +126,19 @@ namespace rrt_planner {
         double dist_to_goal = computeDistance(point_nearest, goal_);
         double adaptive_step;
         
-    if (dist_to_goal < 0.5) {
-        adaptive_step = params_.step * 0.4;  // Very small near goal
-    } else if (dist_to_goal < 2.0) {
-        adaptive_step = params_.step ;
-    } else {
-        adaptive_step = params_.step * 1.5;  // Larger steps far away
-    }
-        
+    // if (dist_to_goal < 0.5) {
+    //     adaptive_step = params_.step * 0.65; //0.25;  // Very small near goal
+    // } else if (dist_to_goal < 2.0) {
+    //     adaptive_step = params_.step; //*0.75;
+    // } else {
+    //     adaptive_step = params_.step * 2; //1.5;  // Larger steps far away
+    // }
+        if (dist_to_goal < 2) {
+            adaptive_step = params_.step;
+        }else {
+            adaptive_step = params_.step * 2; //1.5;  // Larger steps far away
+        }
+
         double distance = computeDistance(point_nearest, point_rand);
         
         if (distance <= adaptive_step) {

@@ -32,7 +32,7 @@ namespace rrt_planner {
     
         // Check if cost is below threshold (150)
         // Values >= 150 are considered obstacles (inflated or lethal)
-        return (cost < 155);
+        return (cost < 163);
 
     }
 
