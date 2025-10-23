@@ -19,10 +19,10 @@ class QLearningROS:
         # Parâmetros do Q-Learning
         self.alpha = 0.2  # Taxa de aprendizagem
         self.gamma = 0.9  # Fator de desconto
-        self.epsilon = 0 # Probabilidade de exploração inicial
+        self.epsilon = 0.9 # Probabilidade de exploração inicial
         self.epsilon_decay = 0.99996 # Fator de decaimento para epsilon
-        self.epsilon_min = 0   # Epsilon mínimo
-        self.num_episodes = 1000
+        self.epsilon_min = 0.05   # Epsilon mínimo
+        self.num_episodes = 100000
 
         # Definição de ações: 0: frente, 1: virar à esquerda, 2: virar à direita, 3: parar
         self.actions = ["forward", "turn_left", "turn_right", "stay"]
@@ -350,8 +350,8 @@ class QLearningROS:
                 self.visit_counts[r, c] += 1
 
                 # Publicar para RViz
-                self.publish_visualization(state)
-                self.publish_tf()
+                #self.publish_visualization(state)
+                #self.publish_tf()
                 #rospy.sleep(0.01)
 
                 if done:
