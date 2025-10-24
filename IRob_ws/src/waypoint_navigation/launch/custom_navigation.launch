@@ -1,0 +1,11 @@
+<launch>
+  <rosparam file="$(find waypoint_navigation)/params/custom_amcl.yaml" command="load" ns="amcl"/>
+
+  <include file="$(find waypoint_navigation)/launch/amcl_custom.launch"/>
+    <arg name="map_file" value="/home/pablo/IRob-git/IRob/IRob_ws/src/maps/my_map1.yaml"/>
+  </include>
+
+  <!-- Force reapply parameters after AMCL is fully up -->
+  <node pkg="dynamic_reconfigure" type="dynparam" name="amcl_dyn_load" args="load /amcl $(find waypoint_navigation)/params/custom_amcl.yaml"/>
+</launch>
+

@@ -1,0 +1,7 @@
+<launch>
+  <!-- Load tolerances into the move_base namespace -->
+  <rosparam file="$(find waypoint_navigation)/config/move_base_params.yaml" command="load" ns="move_base"/>
+
+  <!-- Launch your waypoint-following node -->
+  <node pkg="waypoint_navigation" type="waypoint_navigation.py" name="waypoint_navigation" output="screen"/>
+</launch>

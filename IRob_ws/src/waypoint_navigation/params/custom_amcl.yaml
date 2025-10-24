@@ -1,0 +1,49 @@
+# Frames
+odom_frame_id: odom
+base_frame_id: base_link
+global_frame_id: map
+tf_broadcast: true
+transform_tolerance: 0.5
+
+# Motion model (reduce odom noise a bit)
+odom_alpha1: 0.3      # rot noise from rot
+odom_alpha2: 0.15     # trans noise from trans
+odom_alpha3: 0.15     # trans noise from rot
+odom_alpha4: 0.3      # rot noise from trans
+odom_alpha5: 0.05     # (keep small)
+
+# Laser model (trust laser more)
+laser_model_type: likelihood_field
+laser_max_range: 3.5          # set to your lidar’s reliable max
+laser_z_short: 0.0
+laser_z_max: 0.0
+laser_z_hit: 0.8
+laser_sigma_hit: 0.08
+laser_z_rand: 0.2
+laser_likelihood_max_dist: 2.5
+laser_max_beams: 80
+
+# Update & resampling
+update_min_d: 0.05
+update_min_a: 0.05
+resample_interval: 1
+
+# Beam skipping (robust to partial mismatches)
+do_beamskip: true
+beam_skip_distance: 0.5
+beam_skip_threshold: 0.3
+beam_skip_error_threshold: 0.9
+
+# Adaptive sampling (KLD)
+min_particles: 500
+max_particles: 6000
+kld_err: 0.05
+kld_z: 0.99
+recovery_alpha_slow: 0.001
+recovery_alpha_fast: 0.1
+
+# Initial covariance (don’t make it too big—let KLD grow when needed)
+initial_cov_xx: 0.5
+initial_cov_yy: 0.5
+initial_cov_aa: 0.5
+
