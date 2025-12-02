@@ -6,17 +6,17 @@ import matplotlib.pyplot as plt
 import cv2
 import pickle
 
-# Caminhos dos ficheiros
+# File paths
 BASE_DIR = "/root/catkin_ws/src/q_learning_robot"
 SUMMARY_FILE = os.path.join(BASE_DIR, "episodes_summary.csv")
 VISITS_FILE = os.path.join(BASE_DIR, "visit_counts.npy")
 SNAPSHOT_DIR = os.path.join(BASE_DIR, "q_snapshots")
 
 def plot_curves():
-    """Lê episodes_summary.csv e plota curvas de recompensa e taxa de sucesso."""
+    """Read episodes_summary.csv and plot reward and success rate curves."""
     episodes, rewards, success, success_rate = [], [], [], []
     if not os.path.exists(SUMMARY_FILE):
-        print(f"❌ Arquivo {SUMMARY_FILE} não encontrado.")
+        print(f" File {SUMMARY_FILE} not found.")
         return
     
     with open(SUMMARY_FILE, 'r') as f:
@@ -30,17 +30,17 @@ def plot_curves():
     plt.figure(figsize=(12, 6))
     plt.subplot(2, 1, 1)
     plt.plot(episodes, rewards, label="Total Reward", linewidth=1)
-    plt.xlabel("Episódio")
-    plt.ylabel("Recompensa Total")
-    plt.title("Curva de Recompensa por Episódio")
+    plt.xlabel("Episode")
+    plt.ylabel("Total Reward")
+    plt.title("Reward Curve per Episode")
     plt.grid(True)
     plt.legend()
 
     plt.subplot(2, 1, 2)
-    plt.plot(episodes, success_rate, label="Taxa de Sucesso (média móvel 100 ep)", color='green')
-    plt.xlabel("Episódio")
-    plt.ylabel("Taxa de Sucesso")
-    plt.title("Curva da Taxa de Sucesso")
+    plt.plot(episodes, success_rate, label="Success Rate (100-ep moving avg)", color='green')
+    plt.xlabel("Episode")
+    plt.ylabel("Success Rate")
+    plt.title("Success Rate Curve")
     plt.grid(True)
     plt.legend()
 
@@ -48,35 +48,33 @@ def plot_curves():
     plt.show()
 
 def plot_visit_heatmap():
-    """Mostra o mapa de calor das visitas."""
+    """Show visit counts heatmap."""
     if not os.path.exists(VISITS_FILE):
-        print(f"❌ Arquivo {VISITS_FILE} não encontrado.")
+        print(f" File {VISITS_FILE} not found.")
         return
     
     visits = np.load(VISITS_FILE)
-    visits_log = np.log1p(visits)  # escala logarítmica para visualização
+    visits_log = np.log1p(visits)
     visits_norm = (visits_log / np.max(visits_log) * 255).astype(np.uint8)
     heatmap = cv2.applyColorMap(visits_norm, cv2.COLORMAP_JET)
 
-    # Permitir redimensionamento da janela
-    cv2.namedWindow("Mapa de Visitas (Heatmap)", cv2.WINDOW_NORMAL)
-    # Redimensionar para um tamanho maior (por exemplo, 800x600)
-    cv2.resizeWindow("Mapa de Visitas (Heatmap)", 800, 600)
+    cv2.namedWindow("Visit Heatmap", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("Visit Heatmap", 800, 600)
 
-    cv2.imshow("Mapa de Visitas (Heatmap)", heatmap)
-    print("🟩 Pressiona qualquer tecla para fechar o mapa...")
+    cv2.imshow("Visit Heatmap", heatmap)
+    print("Press any key to close the heatmap...")
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 def analyze_q_snapshots():
-    """Mostra estatísticas da evolução do Q-learning a partir dos snapshots."""
+    """Show Q-learning evolution statistics from snapshots."""
     if not os.path.exists(SNAPSHOT_DIR):
-        print("❌ Diretório de snapshots não encontrado.")
+        print("Snapshots directory not found.")
         return
     
     snapshot_files = sorted([f for f in os.listdir(SNAPSHOT_DIR) if f.endswith(".pkl")])
     if not snapshot_files:
-        print("⚠️ Nenhum snapshot encontrado.")
+        print(" No snapshots found.")
         return
 
     avg_q_values = []
@@ -94,21 +92,21 @@ def analyze_q_snapshots():
         episodes.append(ep_num)
 
     plt.figure(figsize=(10, 5))
-    plt.plot(episodes, avg_q_values, label="Q médio", linewidth=1.5)
-    plt.plot(episodes, max_q_values, label="Q máximo", linewidth=1.5)
-    plt.xlabel("Episódio (snapshot)")
-    plt.ylabel("Valor de Q")
-    plt.title("Evolução dos Q-values ao longo do treino")
+    plt.plot(episodes, avg_q_values, label="Average Q", linewidth=1.5)
+    plt.plot(episodes, max_q_values, label="Max Q", linewidth=1.5)
+    plt.xlabel("Episode (snapshot)")
+    plt.ylabel("Q-value")
+    plt.title("Q-values Evolution During Training")
     plt.grid(True)
     plt.legend()
     plt.show()
 
 if __name__ == "__main__":
-    print("=== 🔍 Analisador de Q-Learning ROS ===")
-    print("1️⃣ Curva de recompensa e sucesso")
-    print("2️⃣ Mapa de calor (visitas)")
-    print("3️⃣ Evolução do Q (snapshots)")
-    print("Escolhe a opção (1/2/3 ou ENTER para todas): ", end="")
+    print("=== 🔍 Q-Learning ROS Analyzer ===")
+    print("Reward and success curves")
+    print("Visit heatmap")
+    print("Q-value evolution (snapshots)")
+    print("Choose option (1/2/3 or ENTER for all): ", end="")
     choice = input().strip()
 
     if choice in ["1", ""]:
